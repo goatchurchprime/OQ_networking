@@ -1,14 +1,8 @@
 extends Spatial
 
 
-# should move into playerframe
-var networkID = 0   # 0:unconnected, 1:server, -1:connecting, >1:connected to client
-
-var rect_position = Vector2()  # holding to fix the Network code
-var modulate = null
 
 var labeltext = "unknown"
-var text = "whatnot"
 
 func processlocalavatarposition(delta):
 	transform = vr.vrOrigin.transform
@@ -35,17 +29,13 @@ func framedatatoavatar(fd):
 	$HandLeft.transform = Transform(Basis(fd[NCONSTANTS2.CFI_VRHANDLEFT_ROTATION]), fd[NCONSTANTS2.CFI_VRHANDLEFT_POSITION])
 	$HandRight.transform = Transform(Basis(fd[NCONSTANTS2.CFI_VRHANDRIGHT_ROTATION]), fd[NCONSTANTS2.CFI_VRHANDRIGHT_POSITION])
 
-func initavatar(avatardata):
-	if avatardata.has("playernodename"): 
-		set_name(avatardata["playernodename"])
-	if avatardata.has("networkid"):
-		networkID = avatardata["networkid"]
+func initavatar(avatardata, firstlocalinit):
+	if firstlocalinit:
+		pass
 	labeltext = avatardata["labeltext"]
-	
+
 func avatarinitdata():
-	var avatardata = { "playernodename":get_name(),
-					   "avatarsceneresource":filename, 
-					   "networkid":networkID, 
+	var avatardata = { "avatarsceneresource":filename, 
 					   "labeltext":labeltext
 					 }
 	return avatardata
